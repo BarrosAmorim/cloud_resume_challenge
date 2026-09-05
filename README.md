@@ -121,8 +121,8 @@ cloud_resume_challenge/
 │   ├── 01-certificacao.md
 │   ├── 02-frontend.md
 │   ├── 03-s3-hospedagem.md
-│   ├── 04-cloudfront-https.md        (planejado)
-│   ├── 05-dns-cloudflare.md          (planejado)
+│   ├── 04-cloudfront-https.md        
+│   ├── 05-dns-cloudflare.md          
 │   ├── 06-javascript-contador.md     (planejado)
 │   ├── 07-dynamodb.md                (planejado)
 │   ├── 08-api-gateway.md             (planejado)
@@ -150,7 +150,7 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 02    | Front-end — HTML e CSS              | ✅ Concluído | [ver](docs/02-frontend.md)             |
 | 03    | Amazon S3 — Static Website Hosting  | ✅ Concluído | [ver](docs/03-s3-hospedagem.md)        |
 | 04    | HTTPS com Amazon CloudFront         | ✅ Concluído | [ver](docs/04-cloudfront-https.md)     |
-| 05    | DNS personalizado                   | ⬜ Pendente  | _(planejado)_                          |
+| 05    | DNS personalizado                   | ✅ Concluído | [ver](docs/dns-cloudflare.md)          |
 | 06    | JavaScript e contador de visitantes | ⬜ Pendente  | _(planejado)_                          |
 | 07    | Banco de dados — DynamoDB           | ⬜ Pendente  | _(planejado)_                          |
 | 08    | API — API Gateway                   | ⬜ Pendente  | _(planejado)_                          |
