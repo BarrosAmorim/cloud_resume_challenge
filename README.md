@@ -112,7 +112,7 @@ cloud_resume_challenge/
 │
 ├── .github/
 │   └── workflows/
-│       ├── backend.yml     
+│       ├── backend.yml       
 │       └── frontend.yml    
 │
 ├── docs/
@@ -130,10 +130,10 @@ cloud_resume_challenge/
 │   ├── 12-cicd-backend.md
 │   └── 13-cicd-frontend.md
 │
-├── template.yaml           # Infraestrutura como código (SAM)
-├── samconfig.toml          # Configuração do SAM
+├── template.yaml           
+├── samconfig.toml          
 ├── .gitignore
-└── README.md               # Este arquivo
+└── README.md             
 ```
 
 ---
