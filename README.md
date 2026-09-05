@@ -149,7 +149,7 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 01    | Certificação AWS                    | ✅ Concluído | [ver](docs/01-certificacao.md)         |
 | 02    | Front-end — HTML e CSS              | ✅ Concluído | [ver](docs/02-frontend.md)             |
 | 03    | Amazon S3 — Static Website Hosting  | ✅ Concluído | [ver](docs/03-s3-hospedagem.md)        |
-| 04    | HTTPS com Amazon CloudFront         | ⬜ Pendente  | _(planejado)_                          |
+| 04    | HTTPS com Amazon CloudFront         | ✅ Concluído | [ver](docs/04-cloudfront-https.md)     |
 | 05    | DNS personalizado                   | ⬜ Pendente  | _(planejado)_                          |
 | 06    | JavaScript e contador de visitantes | ⬜ Pendente  | _(planejado)_                          |
 | 07    | Banco de dados — DynamoDB           | ⬜ Pendente  | _(planejado)_                          |
