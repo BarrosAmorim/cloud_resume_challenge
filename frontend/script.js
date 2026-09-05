@@ -1,0 +1,15 @@
+async function getVisitorCount() {
+    try {
+        const apiUrl = 'https://sua-api-gateway-url.execute-api.region.amazonaws.com/count';
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        document.getElementById('visitor-count').textContent = data.count || '0';
+    } catch (error) {
+        console.error('Erro ao carregar contador:', error);
+        document.getElementById('visitor-count').textContent = '⚠️ Erro';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', getVisitorCount);
