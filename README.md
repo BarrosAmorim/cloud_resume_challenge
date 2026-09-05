@@ -144,9 +144,9 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 
 | Etapa | Descrição | Status |
 |-------|-----------|--------|
-| 01 | Certificação AWS | ⬜ Pendente |
-| 02 | Front-end — HTML e CSS | ⬜ Pendente |
-| 03 | Amazon S3 — Static Website Hosting | ⬜ Pendente |
+| 01 | Certificação AWS | ✅ Concluído |
+| 02 | Front-end — HTML e CSS | ✅ Concluído |
+| 03 | Amazon S3 — Static Website Hosting | ✅ Concluído |
 | 04 | HTTPS com Amazon CloudFront | ⬜ Pendente |
 | 05 | DNS personalizado | ⬜ Pendente |
 | 06 | JavaScript e contador de visitantes | ⬜ Pendente |
@@ -164,9 +164,9 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 
 | Etapa | Status |
 |-------|--------|
-| Certificação AWS | ⬜ Pendente |
-| Front-end (HTML/CSS/JS) | ⬜ Pendente |
-| Hospedagem estática (S3) | ⬜ Pendente |
+| Certificação AWS | ✅ Concluído |
+| Front-end (HTML/CSS/JS) | ✅ Concluído |
+| Hospedagem estática (S3) | ✅ Concluído |
 | HTTPS (CloudFront) | ⬜ Pendente |
 | DNS personalizado | ⬜ Pendente |
 | Banco de dados (DynamoDB) | ⬜ Pendente |
