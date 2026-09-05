@@ -1,11 +1,12 @@
 # Cloud Resume Challenge — Rafael
 
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)](https://github.com/seu-usuario/cloud-resume-challenge)
-[![AWS](https://img.shields.io/badge/AWS-Cloud-orange)](https://aws.amazon.com/)
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)](https://github.com/BarrosAmorim/cloud_resume_challenge) [![AWS](https://img.shields.io/badge/AWS-Cloud-orange)](https://aws.amazon.com/)
 
 Currículo online construído seguindo o **Cloud Resume Challenge**, aplicando na prática conceitos de Cloud Computing, Infraestrutura como Código, back-end serverless e CI/CD na AWS.
 
 🔗 **Site publicado:** em breve
+
+> 🚧 **Este projeto está em construção.** A estrutura de pastas e a documentação abaixo representam o **planejamento completo** do desafio — as etapas concluídas até o momento estão marcadas na tabela de [Progresso e Documentação](#-progresso-e-documentação). Acompanhe o progresso real pelo histórico de commits.
 
 ---
 
@@ -15,8 +16,7 @@ Currículo online construído seguindo o **Cloud Resume Challenge**, aplicando n
 - [Arquitetura](#-arquitetura)
 - [Tecnologias utilizadas](#-tecnologias-utilizadas)
 - [Estrutura do projeto](#-estrutura-do-projeto)
-- [Documentação](#-documentação)
-- [Resultados](#-resultados)
+- [Progresso e Documentação](#-progresso-e-documentação)
 - [Segurança](#-segurança)
 - [O que estou aprendendo](#-o-que-estou-aprendendo)
 - [Status do projeto](#-status-do-projeto)
@@ -83,100 +83,83 @@ Backend                          Frontend
 
 ## 🛠️ Tecnologias utilizadas
 
-| Categoria | Tecnologias |
-|-----------|-------------|
-| **Front-end** | HTML, CSS, JavaScript |
-| **Back-end** | Python (AWS Lambda), Boto3, Pytest |
-| **Infraestrutura AWS** | S3, CloudFront, ACM, DynamoDB, API Gateway (HTTP API), IAM, CloudFormation |
-| **IaC** | AWS SAM |
-| **CI/CD** | GitHub Actions, autenticação via OIDC (sem chaves de longa duração) |
-| **DNS** | Cloudflare |
-| **Versionamento** | Git, GitHub |
-| **Ambiente de desenvolvimento** | Raspberry Pi 5 |
+| Categoria                       | Tecnologias                                                                |
+| --------------------------------| ---------------------------------------------------------------------------|
+| **Front-end**                   | HTML, CSS, JavaScript                                                      |
+| **Back-end**                    | Python (AWS Lambda), Boto3, Pytest                                         |
+| **Infraestrutura AWS**          | S3, CloudFront, ACM, DynamoDB, API Gateway (HTTP API), IAM, CloudFormation |
+| **IaC**                         | AWS SAM                                                                    |
+| **CI/CD**                       | GitHub Actions, autenticação via OIDC (sem chaves de longa duração)        |
+| **DNS**                         | Cloudflare                                                                 |
+| **Versionamento**               | Git, GitHub                                                                |
+| **Ambiente de desenvolvimento** | Raspberry Pi 5                                                             |
 
 ---
 
 ## 📁 Estrutura do projeto
 
+> ℹ️ Estrutura final prevista para o projeto completo. Pastas e arquivos ainda não criados estão marcados como `(planejado)`.
+
 ```
 cloud_resume_challenge/
 │
 ├── frontend/
-│   ├── index.html          
-│   ├── style.css           
-│   └── script.js           
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
 │
-├── backend/
-│   ├── lambda_function.py  
-│   └── test_lambda_function.py  
+├── backend/                          (planejado)
+│   ├── lambda_function.py
+│   └── test_lambda_function.py
 │
-├── .github/
+├── .github/                          (planejado)
 │   └── workflows/
-│       ├── backend.yml       
-│       └── frontend.yml    
+│       ├── backend.yml
+│       └── frontend.yml
 │
 ├── docs/
 │   ├── 01-certificacao.md
 │   ├── 02-frontend.md
 │   ├── 03-s3-hospedagem.md
-│   ├── 04-cloudfront-https.md
-│   ├── 05-dns-cloudflare.md
-│   ├── 06-javascript-contador.md
-│   ├── 07-dynamodb.md
-│   ├── 08-api-gateway.md
-│   ├── 09-lambda-backend.md
-│   ├── 10-testes-automatizados.md
-│   ├── 11-iac-sam.md
-│   ├── 12-cicd-backend.md
-│   └── 13-cicd-frontend.md
+│   ├── 04-cloudfront-https.md        (planejado)
+│   ├── 05-dns-cloudflare.md          (planejado)
+│   ├── 06-javascript-contador.md     (planejado)
+│   ├── 07-dynamodb.md                (planejado)
+│   ├── 08-api-gateway.md             (planejado)
+│   ├── 09-lambda-backend.md          (planejado)
+│   ├── 10-testes-automatizados.md    (planejado)
+│   ├── 11-iac-sam.md                 (planejado)
+│   ├── 12-cicd-backend.md            (planejado)
+│   └── 13-cicd-frontend.md           (planejado)
 │
-├── template.yaml           
-├── samconfig.toml          
+├── template.yaml                     (planejado)
+├── samconfig.toml                    (planejado)
 ├── .gitignore
-└── README.md             
+└── README.md
 ```
 
 ---
 
-## 📚 Documentação
+## 📚 Progresso e Documentação
 
-O processo completo — incluindo passo a passo, comandos utilizados, problemas encontrados e soluções — está documentado etapa por etapa:
+O processo completo — incluindo passo a passo, comandos utilizados, problemas encontrados e soluções — está documentado etapa por etapa. Clique em "ver" para acessar o detalhamento de cada uma:
 
-| Etapa | Descrição | Status |
-|-------|-----------|--------|
-| 01 | Certificação AWS | ✅ Concluído |
-| 02 | Front-end — HTML e CSS | ✅ Concluído |
-| 03 | Amazon S3 — Static Website Hosting | ✅ Concluído |
-| 04 | HTTPS com Amazon CloudFront | ⬜ Pendente |
-| 05 | DNS personalizado | ⬜ Pendente |
-| 06 | JavaScript e contador de visitantes | ⬜ Pendente |
-| 07 | Banco de dados — DynamoDB | ⬜ Pendente |
-| 08 | API — API Gateway | ⬜ Pendente |
-| 09 | Back-end — Python/Lambda | ⬜ Pendente |
-| 10 | Testes automatizados | ⬜ Pendente |
-| 11 | Infrastructure as Code — AWS SAM | ⬜ Pendente |
-| 12 | CI/CD — Back-end | ⬜ Pendente |
-| 13 | CI/CD — Front-end | ⬜ Pendente |
-
----
-
-## 📊 Resultados
-
-| Etapa | Status |
-|-------|--------|
-| Certificação AWS | ✅ Concluído |
-| Front-end (HTML/CSS/JS) | ✅ Concluído |
-| Hospedagem estática (S3) | ✅ Concluído |
-| HTTPS (CloudFront) | ⬜ Pendente |
-| DNS personalizado | ⬜ Pendente |
-| Banco de dados (DynamoDB) | ⬜ Pendente |
-| API (API Gateway) | ⬜ Pendente |
-| Back-end (Lambda/Python) | ⬜ Pendente |
-| Testes automatizados | ⬜ Pendente |
-| Infrastructure as Code (SAM) | ⬜ Pendente |
-| CI/CD Back-end | ⬜ Pendente |
-| CI/CD Front-end | ⬜ Pendente |
-| Blog post | ⬜ Pendente |
+| Etapa | Descrição                           | Status       | Doc                                     |
+| ----- | ------------------------------------| ------------ | ----------------------------------------|
+| 01    | Certificação AWS                    | ✅ Concluído | [ver](docs/01-certificacao.md)         |
+| 02    | Front-end — HTML e CSS              | ✅ Concluído | [ver](docs/02-frontend.md)             |
+| 03    | Amazon S3 — Static Website Hosting  | ✅ Concluído | [ver](docs/03-s3-hospedagem.md)        |
+| 04    | HTTPS com Amazon CloudFront         | ⬜ Pendente  | _(planejado)_                          |
+| 05    | DNS personalizado                   | ⬜ Pendente  | _(planejado)_                          |
+| 06    | JavaScript e contador de visitantes | ⬜ Pendente  | _(planejado)_                          |
+| 07    | Banco de dados — DynamoDB           | ⬜ Pendente  | _(planejado)_                          |
+| 08    | API — API Gateway                   | ⬜ Pendente  | _(planejado)_                          |
+| 09    | Back-end — Python/Lambda            | ⬜ Pendente  | _(planejado)_                          |
+| 10    | Testes automatizados                | ⬜ Pendente  | _(planejado)_                          |
+| 11    | Infrastructure as Code — AWS SAM    | ⬜ Pendente  | _(planejado)_                          |
+| 12    | CI/CD — Back-end                    | ⬜ Pendente  | _(planejado)_                          |
+| 13    | CI/CD — Front-end                   | ⬜ Pendente  | _(planejado)_                          |
+| —     | Blog post                           | ⬜ Pendente  | _(planejado)_                          |
 
 ---
 
@@ -205,19 +188,19 @@ Este projeto está sendo utilizado como laboratório prático para consolidar co
 
 ## 🚧 Status do projeto
 
-🚧 **Em desenvolvimento** — primeira etapa: configuração do ambiente e criação da estrutura do projeto.
+🚧 **Em desenvolvimento** — próxima etapa: HTTPS com Amazon CloudFront.
 
 ---
 
 ## 👨‍💻 Autor
 
-**Rafael** - [GitHub](https://github.com/seu-usuario) | [LinkedIn](https://linkedin.com/in/seu-perfil)
+**Rafael (Barros Amorim)** - [GitHub](https://github.com/BarrosAmorim) | LinkedIn: _(adicionar link)_
 
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://github.com/BarrosAmorim/cloud_resume_challenge/blob/main/LICENSE) para mais detalhes.
 
 ---
 
