@@ -27,8 +27,7 @@ O arquivo foi criado com a função `getVisitorCount()`, que:
 ```javascript
 async function getVisitorCount() {
     try {
-        // URL da API Gateway (será atualizada depois)
-        const apiUrl = 'https://sua-api-gateway-url.execute-api.region.amazonaws.com/count';
+        const apiUrl = 'https://qjtn3yvqhe.execute-api.us-east-1.amazonaws.com/count';
         
         const response = await fetch(apiUrl);
         const data = await response.json();

@@ -124,9 +124,9 @@ cloud_resume_challenge/
 │   ├── 04-cloudfront-https.md        
 │   ├── 05-dns-cloudflare.md          
 │   ├── 06-javascript-contador.md     
-│   ├── 07-dynamodb.md                (planejado)
-│   ├── 08-api-gateway.md             (planejado)
-│   ├── 09-lambda-backend.md          (planejado)
+│   ├── 07-dynamodb.md                
+│   ├── 08-api-gateway.md             
+│   ├── 09-lambda-backend.md          
 │   ├── 10-testes-automatizados.md    (planejado)
 │   ├── 11-iac-sam.md                 (planejado)
 │   ├── 12-cicd-backend.md            (planejado)
@@ -151,10 +151,10 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 03    | Amazon S3 — Static Website Hosting  | ✅ Concluído | [ver](docs/03-s3-hospedagem.md)        |
 | 04    | HTTPS com Amazon CloudFront         | ✅ Concluído | [ver](docs/04-cloudfront-https.md)     |
 | 05    | DNS personalizado                   | ✅ Concluído | [ver](docs/05-dns-cloudflare.md)       |
-| 06    | JavaScript e contador de visitantes | ✅ Iniciado  | [ver](docs/06-javascript-contador.md)  |
-| 07    | Banco de dados — DynamoDB           | ⬜ Pendente  | _(planejado)_                          |
-| 08    | API — API Gateway                   | ⬜ Pendente  | _(planejado)_                          |
-| 09    | Back-end — Python/Lambda            | ⬜ Pendente  | _(planejado)_                          |
+| 06    | JavaScript e contador de visitantes | ✅ Concluído | [ver](docs/06-javascript-contador.md)  |
+| 07    | Banco de dados — DynamoDB           | ✅ Concluído | [ver](docs/07-dynamodb.md)             |
+| 08    | API — API Gateway                   | ✅ Concluído | [ver](docs/08-api-gateway.md)          |
+| 09    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/09-lambda-backend.md)       |
 | 10    | Testes automatizados                | ⬜ Pendente  | _(planejado)_                          |
 | 11    | Infrastructure as Code — AWS SAM    | ⬜ Pendente  | _(planejado)_                          |
 | 12    | CI/CD — Back-end                    | ⬜ Pendente  | _(planejado)_                          |
