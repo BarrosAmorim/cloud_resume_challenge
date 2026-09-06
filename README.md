@@ -108,7 +108,7 @@ cloud_resume_challenge/
 │   ├── style.css
 │   └── script.js
 │
-├── backend/                          (planejado)
+├── backend/                          
 │   ├── lambda_function.py
 │   └── test_lambda_function.py
 │
@@ -127,7 +127,7 @@ cloud_resume_challenge/
 │   ├── 07-dynamodb.md                
 │   ├── 08-api-gateway.md             
 │   ├── 09-lambda-backend.md          
-│   ├── 10-testes-automatizados.md    (planejado)
+│   ├── 10-testes-automatizados.md    
 │   ├── 11-iac-sam.md                 (planejado)
 │   ├── 12-cicd-backend.md            (planejado)
 │   └── 13-cicd-frontend.md           (planejado)
@@ -155,7 +155,7 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 07    | Banco de dados — DynamoDB           | ✅ Concluído | [ver](docs/07-dynamodb.md)             |
 | 08    | API — API Gateway                   | ✅ Concluído | [ver](docs/08-api-gateway.md)          |
 | 09    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/09-lambda-backend.md)       |
-| 10    | Testes automatizados                | ⬜ Pendente  | _(planejado)_                          |
+| 10    | Testes automatizados                | ✅ Concluído | [ver](docs/10-testes-automatizados.md) |
 | 11    | Infrastructure as Code — AWS SAM    | ⬜ Pendente  | _(planejado)_                          |
 | 12    | CI/CD — Back-end                    | ⬜ Pendente  | _(planejado)_                          |
 | 13    | CI/CD — Front-end                   | ⬜ Pendente  | _(planejado)_                          |
