@@ -1,17 +1,14 @@
 import os
+import json
 
+import boto3
+from moto import mock_aws
+
+# Configurações do ambiente de teste
 os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 os.environ['TABLE_NAME'] = 'VisitorsCount'
 
-import json
-
-import pytest
-
-import boto3
-
-from moto import mock_aws
-
-# Importa a função depois de configurar as variáveis de ambiente
+# Importa a função Lambda
 from lambda_function import lambda_handler
 
 
@@ -33,7 +30,7 @@ def test_lambda_handler():
         BillingMode='PAY_PER_REQUEST'
     )
 
-    # Inserir um item inicial (contador = 0)
+    # Inserir um item inicial
     table.put_item(
         Item={
             'id': 'visitor_count',
@@ -44,11 +41,12 @@ def test_lambda_handler():
     # Chamar a função Lambda
     response = lambda_handler({}, None)
 
-    # Mostrar a resposta para facilitar o diagnóstico
-    print("RESPOSTA DA LAMBDA:", response)
+    print("\nRESPOSTA DA LAMBDA:", response)
 
-    # Verificar se a resposta é 200
-    assert response['statusCode'] == 200, f"Erro da Lambda: {response}"
+    # Verificar se a Lambda respondeu com sucesso
+    assert response['statusCode'] == 200, (
+        f"Erro da Lambda: {response}"
+    )
 
     body = json.loads(response['body'])
 
@@ -60,6 +58,7 @@ def test_lambda_handler():
 def test_lambda_handler_multiple_calls():
     """Testa se a Lambda incrementa corretamente em múltiplas chamadas"""
 
+    # Criar a tabela DynamoDB mockada
     dynamodb = boto3.resource('dynamodb')
 
     table = dynamodb.create_table(
@@ -73,6 +72,7 @@ def test_lambda_handler_multiple_calls():
         BillingMode='PAY_PER_REQUEST'
     )
 
+    # Inserir um item inicial
     table.put_item(
         Item={
             'id': 'visitor_count',
@@ -84,10 +84,11 @@ def test_lambda_handler_multiple_calls():
     for i in range(3):
         response = lambda_handler({}, None)
 
-        # Mostrar a resposta para facilitar o diagnóstico
-        print("RESPOSTA DA LAMBDA:", response)
+        print("\nRESPOSTA DA LAMBDA:", response)
 
-        assert response['statusCode'] == 200
+        assert response['statusCode'] == 200, (
+            f"Erro da Lambda: {response}"
+        )
 
         body = json.loads(response['body'])
 
