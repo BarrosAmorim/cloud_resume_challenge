@@ -48,7 +48,7 @@ def test_lambda_handler():
     print("RESPOSTA DA LAMBDA:", response)
 
     # Verificar se a resposta é 200
-    assert response['statusCode'] == 200
+    assert response['statusCode'] == 200, f"Erro da Lambda: {response}"
 
     body = json.loads(response['body'])
 
