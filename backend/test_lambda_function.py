@@ -1,50 +1,77 @@
-import json
-import boto3
 import os
-from decimal import Decimal
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
+os.environ['TABLE_NAME'] = 'VisitorsCount'
 
-dynamodb = boto3.resource('dynamodb')
+import json
+import pytest
+import boto3
+from moto import mock_aws
 
+# Importa a função depois de configurar as variáveis de ambiente
+from lambda_function import lambda_handler
 
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return int(obj) if obj % 1 == 0 else float(obj)
-        return super(DecimalEncoder, self).default(obj)
-
-
-def lambda_handler(event, context):
-    try:
-        table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
-        table = dynamodb.Table(table_name)
-
-        response = table.update_item(
-            Key={'id': 'visitor_count'},
-            UpdateExpression='ADD visit_count :inc',
-            ExpressionAttributeValues={':inc': 1},
-            ReturnValues='UPDATED_NEW'
-        )
-
-        count = response['Attributes']['visit_count']
-
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps(
-                {'count': int(count)},
-                cls=DecimalEncoder
-            )
+@mock_aws
+def test_lambda_handler():
+    """Testa se a Lambda incrementa o contador corretamente"""
+    
+    # Criar a tabela DynamoDB mockada
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.create_table(
+        TableName='VisitorsCount',
+        KeySchema=[
+            {'AttributeName': 'id', 'KeyType': 'HASH'}
+        ],
+        AttributeDefinitions=[
+            {'AttributeName': 'id', 'AttributeType': 'S'}
+        ],
+        BillingMode='PAY_PER_REQUEST'
+    )
+    
+    # Inserir um item inicial (contador = 0)
+    table.put_item(
+        Item={
+            'id': 'visitor_count',
+            'visit_count': 0
         }
+    )
+    
+    # Chamar a função Lambda
+    response = lambda_handler({}, None)
+    
+    # Verificar se a resposta é 200
+    assert response['statusCode'] == 200
+    body = json.loads(response['body'])
+    assert 'count' in body
+    assert body['count'] == 1
 
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps({'error': str(e)})
+@mock_aws
+def test_lambda_handler_multiple_calls():
+    """Testa se a Lambda incrementa corretamente em múltiplas chamadas"""
+    
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.create_table(
+        TableName='VisitorsCount',
+        KeySchema=[
+            {'AttributeName': 'id', 'KeyType': 'HASH'}
+        ],
+        AttributeDefinitions=[
+            {'AttributeName': 'id', 'AttributeType': 'S'}
+        ],
+        BillingMode='PAY_PER_REQUEST'
+    )
+    
+    table.put_item(
+        Item={
+            'id': 'visitor_count',
+            'visit_count': 0
         }
+    )
+    
+    for i in range(3):
+        response = lambda_handler({}, None)
+        assert response['statusCode'] == 200
+        body = json.loads(response['body'])
+        assert body['count'] == i + 1
+    
+    db_response = table.get_item(Key={'id': 'visitor_count'})
+    assert db_response['Item']['visit_count'] == 3
