@@ -1,7 +1,8 @@
+import os
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 import json
 import pytest
 import boto3
-import os
 from moto import mock_aws
 
 # Importar a função Lambda que vamos testar
