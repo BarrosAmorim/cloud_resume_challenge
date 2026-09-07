@@ -18,7 +18,7 @@ class DecimalEncoder(json.JSONEncoder):
 def lambda_handler(event, context):
     """
     Função principal da Lambda.
-    Incrementa o contador de visitas no DynamoDB e retorna o valor.
+    Incrementa o contador de visitas no DynamoDB e retorna o valor
     """
     try:
         # Incrementar o contador
