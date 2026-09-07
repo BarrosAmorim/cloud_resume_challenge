@@ -4,7 +4,7 @@ import json
 import boto3
 from moto import mock_aws
 
-# Configurações do ambiente de teste
+# Configurações do ambiente de teste.
 os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 os.environ['TABLE_NAME'] = 'VisitorsCount'
 
