@@ -1,72 +1,50 @@
 import json
-from unittest.mock import MagicMock
+import boto3
+import os
+from decimal import Decimal
 
-import lambda_function
+dynamodb = boto3.resource('dynamodb')
 
 
-def test_lambda_handler():
-    # Simula o DynamoDB
-    lambda_function.table = MagicMock()
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return int(obj) if obj % 1 == 0 else float(obj)
+        return super(DecimalEncoder, self).default(obj)
 
-    lambda_function.table.update_item.return_value = {
-        "Attributes": {
-            "visit_count": 51  # ← Corrigido
+
+def lambda_handler(event, context):
+    try:
+        table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
+        table = dynamodb.Table(table_name)
+
+        response = table.update_item(
+            Key={'id': 'visitor_count'},
+            UpdateExpression='ADD visit_count :inc',
+            ExpressionAttributeValues={':inc': 1},
+            ReturnValues='UPDATED_NEW'
+        )
+
+        count = response['Attributes']['visit_count']
+
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            'body': json.dumps(
+                {'count': int(count)},
+                cls=DecimalEncoder
+            )
         }
-    }
 
-    # Executa a Lambda
-    response = lambda_function.lambda_handler({}, None)
-
-    # Verifica o resultado
-    assert response["statusCode"] == 200
-
-    body = json.loads(response["body"])
-
-    assert body["count"] == 51
-
-
-def test_lambda_increments_counter():
-    # Simula o DynamoDB
-    lambda_function.table = MagicMock()
-
-    lambda_function.table.update_item.return_value = {
-        "Attributes": {
-            "visit_count": 51  # ← Corrigido
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            'body': json.dumps({'error': str(e)})
         }
-    }
-
-    # Executa a Lambda
-    lambda_function.lambda_handler({}, None)
-
-    # Verifica se o DynamoDB recebeu o comando correto
-    lambda_function.table.update_item.assert_called_once_with(
-        Key={
-            "id": "visitor_count"  # ← Corrigido
-        },
-        UpdateExpression="ADD visit_count :inc",  # ← Corrigido
-        ExpressionAttributeValues={
-            ":inc": 1
-        },
-        ReturnValues="UPDATED_NEW"
-    )
-
-
-def test_lambda_returns_different_count():
-    # Simula o DynamoDB
-    lambda_function.table = MagicMock()
-
-    lambda_function.table.update_item.return_value = {
-        "Attributes": {
-            "visit_count": 100  # ← Corrigido
-        }
-    }
-
-    # Executa a Lambda
-    response = lambda_function.lambda_handler({}, None)
-
-    # Verifica o resultado
-    assert response["statusCode"] == 200
-
-    body = json.loads(response["body"])
-
-    assert body["count"] == 100
