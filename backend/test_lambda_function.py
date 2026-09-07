@@ -1,21 +1,27 @@
 import os
+
 os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 os.environ['TABLE_NAME'] = 'VisitorsCount'
 
 import json
+
 import pytest
+
 import boto3
+
 from moto import mock_aws
 
 # Importa a função depois de configurar as variáveis de ambiente
 from lambda_function import lambda_handler
 
+
 @mock_aws
 def test_lambda_handler():
     """Testa se a Lambda incrementa o contador corretamente"""
-    
+
     # Criar a tabela DynamoDB mockada
     dynamodb = boto3.resource('dynamodb')
+
     table = dynamodb.create_table(
         TableName='VisitorsCount',
         KeySchema=[
@@ -26,7 +32,7 @@ def test_lambda_handler():
         ],
         BillingMode='PAY_PER_REQUEST'
     )
-    
+
     # Inserir um item inicial (contador = 0)
     table.put_item(
         Item={
@@ -34,21 +40,28 @@ def test_lambda_handler():
             'visit_count': 0
         }
     )
-    
+
     # Chamar a função Lambda
     response = lambda_handler({}, None)
-    
+
+    # Mostrar a resposta para facilitar o diagnóstico
+    print("RESPOSTA DA LAMBDA:", response)
+
     # Verificar se a resposta é 200
     assert response['statusCode'] == 200
+
     body = json.loads(response['body'])
+
     assert 'count' in body
     assert body['count'] == 1
+
 
 @mock_aws
 def test_lambda_handler_multiple_calls():
     """Testa se a Lambda incrementa corretamente em múltiplas chamadas"""
-    
+
     dynamodb = boto3.resource('dynamodb')
+
     table = dynamodb.create_table(
         TableName='VisitorsCount',
         KeySchema=[
@@ -59,19 +72,30 @@ def test_lambda_handler_multiple_calls():
         ],
         BillingMode='PAY_PER_REQUEST'
     )
-    
+
     table.put_item(
         Item={
             'id': 'visitor_count',
             'visit_count': 0
         }
     )
-    
+
+    # Chamar a Lambda 3 vezes
     for i in range(3):
         response = lambda_handler({}, None)
+
+        # Mostrar a resposta para facilitar o diagnóstico
+        print("RESPOSTA DA LAMBDA:", response)
+
         assert response['statusCode'] == 200
+
         body = json.loads(response['body'])
+
         assert body['count'] == i + 1
-    
-    db_response = table.get_item(Key={'id': 'visitor_count'})
+
+    # Verificar o valor final no DynamoDB
+    db_response = table.get_item(
+        Key={'id': 'visitor_count'}
+    )
+
     assert db_response['Item']['visit_count'] == 3
