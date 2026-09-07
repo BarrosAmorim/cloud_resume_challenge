@@ -4,8 +4,7 @@ import os
 from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
-table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
-table = dynamodb.Table(table_name)
+
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -13,17 +12,21 @@ class DecimalEncoder(json.JSONEncoder):
             return int(obj) if obj % 1 == 0 else float(obj)
         return super(DecimalEncoder, self).default(obj)
 
+
 def lambda_handler(event, context):
     try:
+        table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
+        table = dynamodb.Table(table_name)
+
         response = table.update_item(
             Key={'id': 'visitor_count'},
             UpdateExpression='ADD visit_count :inc',
             ExpressionAttributeValues={':inc': 1},
             ReturnValues='UPDATED_NEW'
         )
-        
+
         count = response['Attributes']['visit_count']
-        
+
         return {
             'statusCode': 200,
             'headers': {
@@ -34,11 +37,15 @@ def lambda_handler(event, context):
                 'count': int(count)
             }, cls=DecimalEncoder)
         }
+
     except Exception as e:
         return {
             'statusCode': 500,
             'headers': {
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
-            'body': json.dumps({'error': str(e)})
+            'body': json.dumps({
+                'error': str(e)
+            })
         }
