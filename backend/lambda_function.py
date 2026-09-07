@@ -3,8 +3,6 @@ import boto3
 import os
 from decimal import Decimal
 
-dynamodb = boto3.resource('dynamodb')
-
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -16,6 +14,8 @@ class DecimalEncoder(json.JSONEncoder):
 def lambda_handler(event, context):
     try:
         table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
+
+        dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table(table_name)
 
         response = table.update_item(
@@ -42,8 +42,7 @@ def lambda_handler(event, context):
         return {
             'statusCode': 500,
             'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
+                'Access-Control-Allow-Origin': '*'
             },
             'body': json.dumps({
                 'error': str(e)
