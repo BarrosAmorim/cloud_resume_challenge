@@ -1,6 +1,6 @@
 async function getVisitorCount() {
     try {
-          const apiUrl = 'https://qjtn3yvqhe.execute-api.us-east-1.amazonaws.com/count';
+          const apiUrl = 'https://cwz64tvvd0.execute-api.us-east-1.amazonaws.com/count';
         
         const response = await fetch(apiUrl);
         const data = await response.json();

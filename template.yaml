@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: Infraestrutura do Cloud Resume Challenge utilizando AWS SAM.
+
+Resources:
+
+  CloudResumeVisitorCount:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: CloudResumeVisitorCountSAM
+      BillingMode: PAY_PER_REQUEST
+
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+      Tags:
+        - Key: Project
+          Value: CloudResumeChallenge
+
+
+  CloudResumeCounter:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: cloud-resume-counter-sam
+      Runtime: python3.13
+      Handler: lambda_function.lambda_handler
+      CodeUri: backend/
+      Timeout: 3
+
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CloudResumeVisitorCount
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CloudResumeVisitorCount
+
+      Events:
+        CountApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudResumeApi
+            Path: /count
+            Method: GET
+
+    Metadata:
+      SamResourceId: CloudResumeCounter
+
+
+  CloudResumeApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Name: CloudResumeAPI-SAM
+      StageName: $default
+
+      CorsConfiguration:
+        AllowOrigins:
+          - https://barrosamorimd.work
+
+        AllowMethods:
+          - GET
+
+        AllowHeaders:
+          - Content-Type
+
+
+Outputs:
+
+  ApiUrl:
+    Description: URL da API do contador de visitantes
+
+    Value: !Sub
+      - https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com
+      - ApiId: !Ref CloudResumeApi
+
+  ApiCountUrl:
+    Description: URL completa do endpoint do contador
+
+    Value: !Sub
+      - https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com/count
+      - ApiId: !Ref CloudResumeApi
+
+  DynamoDBTableName:
+    Description: Nome da tabela DynamoDB
+
+    Value: !Ref CloudResumeVisitorCount
+
+  LambdaFunctionName:
+    Description: Nome da função Lambda
+
+    Value: !Ref CloudResumeCounter

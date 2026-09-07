@@ -186,21 +186,9 @@ Este projeto está sendo utilizado como laboratório prático para consolidar co
 
 ---
 
-## 🚧 Status do projeto
-
-🚧 **Em desenvolvimento** — próxima etapa: HTTPS com Amazon CloudFront.
-
----
-
 ## 👨‍💻 Autor
 
 **Rafael (Barros Amorim)** - [GitHub](https://github.com/BarrosAmorim) | LinkedIn: _(adicionar link)_
-
----
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://github.com/BarrosAmorim/cloud_resume_challenge/blob/main/LICENSE) para mais detalhes.
 
 ---
 

@@ -40,6 +40,19 @@ Antes de hospedar o site, criamos uma estrutura de segurança completa para gara
                 "arn:aws:s3:::cloud-resume-challenge-rafael-2026",
                 "arn:aws:s3:::cloud-resume-challenge-rafael-2026/*"
             ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::sam-artifacts-rafael-2026",
+                "arn:aws:s3:::sam-artifacts-rafael-2026/*"
+            ]
         }
     ]
 }

@@ -13,6 +13,12 @@ Criar uma API HTTP no Amazon API Gateway para expor a função Lambda que gerenc
 
 ---
 
+## 📋 Método de Criação
+
+A API Gateway foi criada utilizando o **Console AWS** (interface web), não via CLI. Isso foi feito para facilitar o entendimento visual dos componentes e validar a integração com a Lambda antes de automatizar com SAM (Etapa 11).
+
+---
+
 ## 📋 Passo a Passo Completo
 
 ### Parte 1: Criar a API HTTP
@@ -216,7 +222,7 @@ Contador: {count: 0}
 
 **Causa:** O usuário IAM não tinha permissão `cloudfront:CreateInvalidation`.
 
-**Solução:** Adicionar a permissão à política IAM:
+**Solução:** Adicionar a permissão à política IAM `s3-resume-bucket-access`:
 
 ```json
 {
@@ -243,6 +249,22 @@ Contador: {count: 0}
    ```html
    <script src="script.js?v=2"></script>
    ```
+
+---
+
+## 🔒 Permissões IAM Necessárias (via CLI)
+
+Se você fosse criar a API via CLI (AWS CLI ou SAM), o usuário IAM precisaria das seguintes permissões adicionais:
+
+```json
+ {
+            "Effect": "Allow",
+            "Action": "apigateway:*",
+            "Resource": "*"
+        }
+```
+
+**Nota:** Como a API foi criada via **Console AWS**, essas permissões não foram necessárias para o usuário IAM.
 
 ---
 
