@@ -36,14 +36,6 @@ jobs:
           cd backend
           pytest test_lambda_function.py -v
 
-      - name: Debug GitHub context
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Ref: $GITHUB_REF"
-          echo "Event: $GITHUB_EVENT_NAME"
-          echo "Actor: $GITHUB_ACTOR"
-          echo "Workflow ref: $GITHUB_WORKFLOW_REF"
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
