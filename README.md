@@ -128,12 +128,12 @@ cloud_resume_challenge/
 │   ├── 08-api-gateway.md             
 │   ├── 09-lambda-backend.md          
 │   ├── 10-testes-automatizados.md    
-│   ├── 11-iac-sam.md                 (planejado)
+│   ├── 11-iac-sam.md                 
 │   ├── 12-cicd-backend.md            (planejado)
 │   └── 13-cicd-frontend.md           (planejado)
 │
-├── template.yaml                     (planejado)
-├── samconfig.toml                    (planejado)
+├── template.yaml                     
+├── samconfig.toml                    
 ├── .gitignore
 └── README.md
 ```
@@ -156,7 +156,7 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 08    | API — API Gateway                   | ✅ Concluído | [ver](docs/08-api-gateway.md)          |
 | 09    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/09-lambda-backend.md)       |
 | 10    | Testes automatizados                | ✅ Concluído | [ver](docs/10-testes-automatizados.md) |
-| 11    | Infrastructure as Code — AWS SAM    | ⬜ Pendente  | _(planejado)_                          |
+| 11    | Infrastructure as Code — AWS SAM    | ✅ Concluído | [ver](docs/11-iac-sam.md)              |
 | 12    | CI/CD — Back-end                    | ⬜ Pendente  | _(planejado)_                          |
 | 13    | CI/CD — Front-end                   | ⬜ Pendente  | _(planejado)_                          |
 | —     | Blog post                           | ⬜ Pendente  | _(planejado)_                          |
