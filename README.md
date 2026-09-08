@@ -1,6 +1,7 @@
 # Cloud Resume Challenge — Rafael
+[![Status](https://img.shields.io/badge/status-concluído-brightgreen)](https://github.com/BarrosAmorim/cloud_resume_challenge)
 
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)](https://github.com/BarrosAmorim/cloud_resume_challenge) [![AWS](https://img.shields.io/badge/AWS-Cloud-orange)](https://aws.amazon.com/)
+---
 
 Currículo online construído seguindo o **Cloud Resume Challenge**, aplicando na prática conceitos de Cloud Computing, Infraestrutura como Código, back-end serverless e CI/CD na AWS.
 
@@ -112,7 +113,7 @@ cloud_resume_challenge/
 │   ├── lambda_function.py
 │   └── test_lambda_function.py
 │
-├── .github/                          (planejado)
+├── .github/                          
 │   └── workflows/
 │       ├── backend.yml
 │       └── frontend.yml
@@ -129,8 +130,8 @@ cloud_resume_challenge/
 │   ├── 09-lambda-backend.md          
 │   ├── 10-testes-automatizados.md    
 │   ├── 11-iac-sam.md                 
-│   ├── 12-cicd-backend.md            (planejado)
-│   └── 13-cicd-frontend.md           (planejado)
+│   ├── 12-cicd-backend.md            
+│   └── 13-cicd-frontend.md           
 │
 ├── template.yaml                     
 ├── samconfig.toml                    
@@ -157,8 +158,8 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 09    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/09-lambda-backend.md)       |
 | 10    | Testes automatizados                | ✅ Concluído | [ver](docs/10-testes-automatizados.md) |
 | 11    | Infrastructure as Code — AWS SAM    | ✅ Concluído | [ver](docs/11-iac-sam.md)              |
-| 12    | CI/CD — Back-end                    | ⬜ Pendente  | _(planejado)_                          |
-| 13    | CI/CD — Front-end                   | ⬜ Pendente  | _(planejado)_                          |
+| 12    | CI/CD — Back-end                    | ✅ Concluído | [ver](docs/12-cicd-backend.md)         |
+| 13    | CI/CD — Front-end                   | ✅ Concluído | [ver](docs/13-cicd-frontend.md)        |
 | —     | Blog post                           | ⬜ Pendente  | _(planejado)_                          |
 
 ---
