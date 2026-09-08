@@ -187,12 +187,6 @@ Este projeto está sendo utilizado como laboratório prático para consolidar co
 
 ---
 
-## 👨‍💻 Autor
-
-**Rafael (Barros Amorim)** - [GitHub](https://github.com/BarrosAmorim) | LinkedIn: _(adicionar link)_
-
----
-
 ## 🙏 Agradecimentos
 
 - [Forrest Brazeal](https://forrestbrazeal.com/) pelo desafio [Cloud Resume Challenge](https://cloudresumechallenge.dev/)
