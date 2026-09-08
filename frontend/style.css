@@ -1,151 +1,90 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    background: #f0f2f5;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.container {
-    background: white;
-    max-width: 900px;
-    width: 100%;
-    padding: 50px;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+  color: #2b2b2b;
+  background-color: #f4f5f7;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 header {
-    text-align: center;
-    border-bottom: 3px solid #2c3e50;
-    padding-bottom: 25px;
-    margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 3px solid #1f4e79;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-h1 {
-    color: #2c3e50;
-    font-size: 2.8rem;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
+header h1 {
+  font-size: 2rem;
+  color: #1f4e79;
 }
 
-.title {
-    color: #3498db;
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 2px;
+header .cargo {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 5px 0 10px;
 }
 
-h2 {
-    color: #2c3e50;
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
+header address {
+  font-style: normal;
+  font-size: 0.95rem;
+}
+
+header address a {
+  color: #1f4e79;
+  text-decoration: none;
+}
+
+header address a:hover {
+  text-decoration: underline;
 }
 
 section {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
-.job, .project {
-    margin-bottom: 20px;
+section h2 {
+  font-size: 1.3rem;
+  color: #1f4e79;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
 }
 
-.job h3, .project h3 {
-    color: #2c3e50;
-    font-size: 1.1rem;
-    font-weight: 600;
+article {
+  margin-bottom: 15px;
 }
 
-.date {
-    color: #7f8c8d;
-    font-weight: 500;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
+article h3 {
+  font-size: 1.05rem;
+}
+
+.periodo {
+  font-size: 0.9rem;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 8px;
 }
 
 ul {
-    list-style-type: none;
-    padding-left: 0;
+  padding-left: 20px;
 }
 
-ul li {
-    padding: 6px 0;
-    padding-left: 25px;
-    position: relative;
-    color: #34495e;
-}
-
-ul li:before {
-    content: "▸";
-    color: #3498db;
-    position: absolute;
-    left: 0;
-    font-weight: bold;
-}
-
-.skills ul li:before {
-    content: "▸";
-}
-
-.certifications ul li:before {
-    content: "🏅";
-}
-
-.education ul li:before {
-    content: "📚";
-}
-
-.projects ul li:before {
-    content: "▸";
-}
-
-.profile p {
-    color: #34495e;
-    text-align: justify;
-    line-height: 1.8;
+li {
+  margin-bottom: 6px;
 }
 
 footer {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #ecf0f1;
-    color: #7f8c8d;
-    font-size: 0.95rem;
-}
-
-#visitor-count {
-    font-weight: bold;
-    color: #3498db;
-    font-size: 1.1rem;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-    .container {
-        padding: 25px;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    .title {
-        font-size: 1rem;
-    }
-    
-    h2 {
-        font-size: 1.2rem;
-    }
+  text-align: center;
+  font-size: 0.9rem;
+  color: #777;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
 }

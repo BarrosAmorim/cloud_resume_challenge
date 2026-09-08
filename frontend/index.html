@@ -4,34 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rafael Barros - DevOps Júnior</title>
+    <title>Rafael de Oliveira Barros Amorim - DevOps Júnior</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- Cabeçalho -->
-        <header>
-            <h1>Rafael de Oliveira Barros Amorim</h1>
-            <p class="title">DevOps Júnior | Cloud & Infrastructure</p>
-        </header>
 
-        <!-- Resumo Profissional -->
-        <section class="profile">
-            <h2>📌 Resumo Profissional</h2>
-            <p>Graduado em Análise e Desenvolvimento de Sistemas, com certificação AWS Certified Cloud Practitioner e em
-                preparação para a AWS Certified Solutions Architect – Associate. Possui experiência prática em Linux,
-                Docker, Nginx, redes, SSH, Tailscale e administração de servidores em ambiente de Home Lab. Busca
-                oportunidade como DevOps Júnior, Cloud/Infrastructure ou Infraestrutura de TI, com foco em automação,
-                cloud, containers e melhoria contínua.</p>
+    <header>
+        <h1>Rafael de Oliveira Barros Amorim</h1>
+        <p class="cargo">DevOps Júnior | AWS | Linux | Docker</p>
+        <address>
+            Brasília - DF |
+            <a href="tel:+5561985305660">(61) 98530-5660</a> |
+            <a href="mailto:barrosamorimd@gmail.com">barrosamorimd@gmail.com</a>
+        </address>
+    </header>
+
+    <main>
+
+        <section id="resumo">
+            <h2>Resumo Profissional</h2>
+            <p>
+                Graduado em Análise e Desenvolvimento de Sistemas, com certificação AWS Certified Cloud Practitioner
+                e em preparação para a AWS Certified Solutions Architect – Associate. Possui experiência prática em
+                Linux, Docker, Nginx, redes, SSH, Tailscale e administração de servidores em ambiente de Home Lab.
+                Possui conhecimentos em fundamentos de Cloud Computing, redes, sistemas operacionais e segurança
+                da informação. Busca oportunidade como DevOps Júnior, Cloud/Infrastructure ou Infraestrutura de TI,
+                com foco em automação, cloud, containers e melhoria contínua.
+            </p>
         </section>
 
-        <!-- Experiência Profissional -->
-        <section class="experience">
-            <h2>💼 Experiência Profissional</h2>
-            <div class="job">
+        <section id="experiencia">
+            <h2>Experiência Profissional</h2>
+            <article>
                 <h3>Vendedor — Grupo Canopus</h3>
-                <p class="date">2014 – 2026</p>
+                <p class="periodo">2014 – 2026</p>
                 <ul>
                     <li>Atendimento direto a clientes, identificação de necessidades, resolução de problemas e
                         acompanhamento de solicitações.</li>
@@ -40,12 +47,11 @@
                     <li>Desenvolvimento de habilidades de comunicação, atendimento, resolução de problemas e
                         relacionamento com clientes.</li>
                 </ul>
-            </div>
+            </article>
         </section>
 
-        <!-- Competências Técnicas -->
-        <section class="skills">
-            <h2>🛠️ Competências Técnicas</h2>
+        <section id="competencias">
+            <h2>Competências Técnicas</h2>
             <ul>
                 <li><strong>Cloud:</strong> AWS (IAM, EC2, S3, VPC e CloudWatch) — conhecimentos fundamentais em Cloud
                     Computing, segurança e alta disponibilidade.</li>
@@ -62,10 +68,9 @@
             </ul>
         </section>
 
-        <!-- Projetos Práticos -->
-        <section class="projects">
-            <h2>🚀 Projetos Práticos</h2>
-            <div class="project">
+        <section id="projetos">
+            <h2>Projetos Práticos</h2>
+            <article>
                 <h3>Home Lab / Servidor Linux — Projeto Pessoal</h3>
                 <ul>
                     <li>Administração de servidor Linux em Raspberry Pi para prática de infraestrutura, redes e
@@ -80,34 +85,34 @@
                     <li>Diagnóstico e resolução de problemas envolvendo containers, serviços Linux, rede, permissões,
                         conectividade e aplicações.</li>
                 </ul>
-            </div>
+            </article>
         </section>
 
-        <!-- Certificações -->
-        <section class="certifications">
-            <h2>📜 Certificações</h2>
+        <section id="certificacoes">
+            <h2>Certificações</h2>
             <ul>
-                <li><strong>AWS Certified Cloud Practitioner</strong> — Amazon Web Services | Julho 2026</li>
-                <li><strong>AWS Certified Solutions Architect — Associate</strong> — Em preparação</li>
+                <li>AWS Certified Cloud Practitioner — Amazon Web Services | Julho 2026</li>
+                <li>AWS Certified Solutions Architect – Associate — Em preparação</li>
             </ul>
         </section>
 
-        <!-- Formação Acadêmica -->
-        <section class="education">
-            <h2>🎓 Formação Acadêmica</h2>
-            <ul>
-                <li><strong>Tecnologia em Análise e Desenvolvimento de Sistemas</strong> — 2021 – 2023<br>Centro
-                    Universitário Instituto de Educação Superior de Brasília (IESB)</li>
-                <li><strong>Técnico em Desenvolvimento e Manutenção de Computadores</strong> — Concluído em
-                    2010<br>Senac</li>
-            </ul>
+        <section id="formacao">
+            <h2>Formação Acadêmica</h2>
+            <article>
+                <h3>Tecnologia em Análise e Desenvolvimento de Sistemas</h3>
+                <p>Centro Universitário Instituto de Educação Superior de Brasília (IESB) | 2021 – 2023</p>
+            </article>
+            <article>
+                <h3>Técnico em Desenvolvimento e Manutenção de Computadores</h3>
+                <p>Senac | Concluído em 2010</p>
+            </article>
         </section>
 
-        <!-- Rodapé com Contador -->
-        <footer>
-            <p>Visitantes: <span id="visitor-count">Carregando...</span></p>
-        </footer>
-    </div>
+    </main>
+
+    <footer>
+        <p>Visitantes: <span id="visitor-count">--</span></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
