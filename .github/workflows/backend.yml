@@ -120,5 +120,6 @@ jobs:
           sam deploy \
             --stack-name cloud-resume-challenge \
             --region us-east-1 \
+            --s3-bucket sam-artifacts-rafael-2026 \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
