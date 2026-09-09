@@ -639,7 +639,30 @@ A Trust Policy da Role foi ajustada para aceitar especificamente o repositório 
 
 Foi importante utilizar o `sub` real do projeto.
 
-Não foi utilizado o `sub` de um projeto anterior.
+### Consulta à API do GitHub para validação do repositório
+
+Durante o diagnóstico da autenticação OIDC, foi consultada a API pública do GitHub para confirmar os dados do repositório utilizado pelo GitHub Actions:
+
+`https://api.github.com/repos/BarrosAmorim/cloud-resume-challenge-aws`
+
+A resposta permitiu confirmar:
+
+* `full_name`: `BarrosAmorim/cloud-resume-challenge-aws`
+* `owner.id`: `24548784`
+* `repository.id`: `1362598451`
+
+Esses valores são identificadores internos utilizados pelo GitHub. A consulta foi útil para confirmar que o workflow estava associado ao repositório correto.
+
+É importante destacar que o `sub` utilizado na Trust Policy do IAM **não foi montado utilizando esses IDs**. Para este projeto, o valor que funcionou foi:
+
+```text
+repo:BarrosAmorim/cloud-resume-challenge-aws:ref:refs/heads/main
+```
+
+A Trust Policy foi então configurada para permitir que somente workflows desse repositório, executados a partir da branch `main`, assumissem a IAM Role por meio do GitHub OIDC.
+
+A configuração foi validada posteriormente executando o GitHub Actions com sucesso.
+
 
 ---
 
