@@ -126,8 +126,8 @@ cloud_resume_challenge/
 │   ├── 05-dns-cloudflare.md          
 │   ├── 06-javascript-contador.md     
 │   ├── 07-dynamodb.md                
-│   ├── 08-api-gateway.md             
-│   ├── 09-lambda-backend.md          
+│   ├── 08-lambda-backend.md            
+│   ├── 09-api-gateway.md            
 │   ├── 10-testes-automatizados.md    
 │   ├── 11-iac-sam.md                 
 │   ├── 12-cicd-backend.md            
@@ -154,8 +154,8 @@ O processo completo — incluindo passo a passo, comandos utilizados, problemas 
 | 05    | DNS personalizado                   | ✅ Concluído | [ver](docs/05-dns-cloudflare.md)       |
 | 06    | JavaScript e contador de visitantes | ✅ Concluído | [ver](docs/06-javascript-contador.md)  |
 | 07    | Banco de dados — DynamoDB           | ✅ Concluído | [ver](docs/07-dynamodb.md)             |
-| 08    | API — API Gateway                   | ✅ Concluído | [ver](docs/08-api-gateway.md)          |
-| 09    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/09-lambda-backend.md)       |
+| 08    | Back-end — Python/Lambda            | ✅ Concluído | [ver](docs/08-lambda-backend.md)          |
+| 09    | API Gateway                         | ✅ Concluído | [ver](docs/09-api-gateway.md)       |
 | 10    | Testes automatizados                | ✅ Concluído | [ver](docs/10-testes-automatizados.md) |
 | 11    | Infrastructure as Code — AWS SAM    | ✅ Concluído | [ver](docs/11-iac-sam.md)              |
 | 12    | CI/CD — Back-end                    | ✅ Concluído | [ver](docs/12-cicd-backend.md)         |

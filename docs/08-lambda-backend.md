@@ -290,4 +290,4 @@ A função Lambda em Python está criada, configurada e integrada com o DynamoDB
 
 ---
 
-[🏠 Voltar ao README](../README.md)
+[🏠 Voltar ao README](../README.md)	
