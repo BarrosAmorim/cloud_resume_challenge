@@ -27,53 +27,46 @@ mkdir -p backend
 
 #### 1.2 Criar o arquivo `backend/requirements.txt`
 
-```bash
-cat > backend/requirements.txt << 'EOF'
+```
 boto3
 pytest
 moto
 EOF
+
 ```
 
 #### 1.3 Criar o arquivo `backend/lambda_function.py`
 
-```bash
-cat > backend/lambda_function.py << 'EOF'
+```
 import json
 import boto3
 import os
 from decimal import Decimal
 
-# Conectar ao DynamoDB
-dynamodb = boto3.resource('dynamodb')
-table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
-table = dynamodb.Table(table_name)
 
 class DecimalEncoder(json.JSONEncoder):
-    """Serializa objetos Decimal para JSON"""
     def default(self, obj):
         if isinstance(obj, Decimal):
             return int(obj) if obj % 1 == 0 else float(obj)
         return super(DecimalEncoder, self).default(obj)
 
+
 def lambda_handler(event, context):
-    """
-    Função principal da Lambda.
-    Incrementa o contador de visitas no DynamoDB e retorna o valor.
-    """
     try:
-        # Incrementar o contador
+        table_name = os.environ.get('TABLE_NAME', 'VisitorsCount')
+
+        dynamodb = boto3.resource('dynamodb')
+        table = dynamodb.Table(table_name)
+
         response = table.update_item(
             Key={'id': 'visitor_count'},
-            UpdateExpression='ADD visit_count :inc',
+            UpdateExpression='ADD visitor_count :inc',
             ExpressionAttributeValues={':inc': 1},
             ReturnValues='UPDATED_NEW'
         )
-        
-        # Obter o novo valor
-        count = response['Attributes']['visit_count']
-        
-        # Retornar resposta com CORS
+
+        count = response['Attributes']['visitor_count']
+
         return {
             'statusCode': 200,
             'headers': {
@@ -84,38 +77,39 @@ def lambda_handler(event, context):
                 'count': int(count)
             }, cls=DecimalEncoder)
         }
-        
+
     except Exception as e:
-        # Tratar erros
         return {
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({'error': str(e)})
+            'body': json.dumps({
+                'error': str(e)
+            })
         }
-EOF
+
 ```
 
 #### 1.4 Criar o arquivo `backend/test_lambda_function.py`
 
-```bash
-cat > backend/test_lambda_function.py << 'EOF'
-import json
-import pytest
-import boto3
+```
 import os
+import json
+
+import boto3
 from moto import mock_aws
 
-# Importar a função Lambda que vamos testar
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
+os.environ['TABLE_NAME'] = 'VisitorsCount'
+
 from lambda_function import lambda_handler
+
 
 @mock_aws
 def test_lambda_handler():
-    """Testa se a Lambda incrementa o contador corretamente"""
-    
-    # 1. Criar a tabela DynamoDB mockada (falsa)
     dynamodb = boto3.resource('dynamodb')
+
     table = dynamodb.create_table(
         TableName='VisitorsCount',
         KeySchema=[
@@ -126,39 +120,32 @@ def test_lambda_handler():
         ],
         BillingMode='PAY_PER_REQUEST'
     )
-    
-    # 2. Inserir um item inicial (contador = 0)
+
     table.put_item(
         Item={
             'id': 'visitor_count',
-            'visit_count': 0
+            'visitor_count': 0
         }
     )
-    
-    # 3. Configurar a variável de ambiente para o teste
-    os.environ['TABLE_NAME'] = 'VisitorsCount'
-    
-    # 4. Chamar a função Lambda
+
     response = lambda_handler({}, None)
-    
-    # 5. Verificar se a resposta é 200 (sucesso)
-    assert response['statusCode'] == 200
-    
-    # 6. Verificar o conteúdo da resposta
+
+    print("\nRESPOSTA DA LAMBDA:", response)
+
+    assert response['statusCode'] == 200, (
+        f"Erro da Lambda: {response}"
+    )
+
     body = json.loads(response['body'])
+
     assert 'count' in body
     assert body['count'] == 1
-    
-    # 7. Verificar se o contador foi incrementado no DynamoDB
-    db_response = table.get_item(Key={'id': 'visitor_count'})
-    assert db_response['Item']['visit_count'] == 1
+
 
 @mock_aws
 def test_lambda_handler_multiple_calls():
-    """Testa se a Lambda incrementa corretamente em múltiplas chamadas"""
-    
-    # 1. Criar a tabela DynamoDB mockada
     dynamodb = boto3.resource('dynamodb')
+
     table = dynamodb.create_table(
         TableName='VisitorsCount',
         KeySchema=[
@@ -169,30 +156,34 @@ def test_lambda_handler_multiple_calls():
         ],
         BillingMode='PAY_PER_REQUEST'
     )
-    
-    # 2. Inserir item inicial
+
     table.put_item(
         Item={
             'id': 'visitor_count',
-            'visit_count': 0
+            'visitor_count': 0
         }
     )
-    
-    os.environ['TABLE_NAME'] = 'VisitorsCount'
-    
-    # 3. Chamar a Lambda 3 vezes
+
     for i in range(3):
         response = lambda_handler({}, None)
-        assert response['statusCode'] == 200
-        body = json.loads(response['body'])
-        assert body['count'] == i + 1
-    
-    # 4. Verificar o valor final
-    db_response = table.get_item(Key={'id': 'visitor_count'})
-    assert db_response['Item']['visit_count'] == 3
-EOF
-```
 
+        print("\nRESPOSTA DA LAMBDA:", response)
+
+        assert response['statusCode'] == 200, (
+            f"Erro da Lambda: {response}"
+        )
+
+        body = json.loads(response['body'])
+
+        assert body['count'] == i + 1
+
+    db_response = table.get_item(
+        Key={'id': 'visitor_count'}
+    )
+
+    assert db_response['Item']['visitor_count'] == 3
+
+```
 ---
 
 ### Parte 2: Criar o Ambiente Virtual

@@ -6,12 +6,12 @@ Converter a infraestrutura do Cloud Resume Challenge em **Infrastructure as Code
 
 Nesta etapa, o SAM passa a criar e gerenciar:
 
-- DynamoDB
-- Lambda
-- API Gateway HTTP
-- IAM Role da Lambda
-- Permissão da API Gateway para invocar a Lambda
-- Stage da API Gateway
+* DynamoDB
+* Lambda
+* API Gateway HTTP
+* IAM Role da Lambda
+* Permissão da API Gateway para invocar a Lambda
+* Stage da API Gateway
 
 Ao final, a infraestrutura deixa de depender de criação manual pelo console e passa a ser reproduzível a partir do `template.yaml`.
 
@@ -25,18 +25,18 @@ Ao final, a infraestrutura deixa de depender de criação manual pelo console e 
 
 ## Recursos utilizados
 
-- AWS SAM CLI
-- AWS CloudFormation
-- AWS CLI
-- AWS Lambda
-- Amazon DynamoDB
-- Amazon API Gateway (HTTP API)
-- IAM
-- Amazon S3
-- Amazon CloudFront
-- Python 3.13
-- YAML
-- TOML
+* AWS SAM CLI
+* AWS CloudFormation
+* AWS CLI
+* AWS Lambda
+* Amazon DynamoDB
+* Amazon API Gateway (HTTP API)
+* IAM
+* Amazon S3
+* Amazon CloudFront
+* Python 3.13
+* YAML
+* TOML
 
 ---
 
@@ -54,10 +54,10 @@ O SAM utiliza esse template e gera os recursos necessários no CloudFormation.
 
 ### Benefícios
 
-- **Reprodutibilidade:** a infraestrutura pode ser recriada.
-- **Versionamento:** o template pode ficar no Git.
-- **Consistência:** os recursos seguem a configuração definida no código.
-- **Automação:** a mesma infraestrutura pode ser utilizada posteriormente em CI/CD.
+* **Reprodutibilidade:** a infraestrutura pode ser recriada.
+* **Versionamento:** o template pode ficar no Git.
+* **Consistência:** os recursos seguem a configuração definida no código.
+* **Automação:** a mesma infraestrutura pode ser utilizada posteriormente em CI/CD.
 
 ---
 
@@ -81,9 +81,9 @@ SAM / CloudFormation
 
 A ordem é importante porque:
 
-- a Lambda precisa acessar o DynamoDB;
-- o API Gateway precisa de uma Lambda para integração;
-- depois disso o SAM pode transformar toda a infraestrutura em código.
+* a Lambda precisa acessar o DynamoDB;
+* o API Gateway precisa de uma Lambda para integração;
+* depois disso o SAM pode transformar toda a infraestrutura em código.
 
 ---
 
@@ -93,7 +93,9 @@ Antes de executar o primeiro `sam deploy`, os recursos abaixo já haviam sido cr
 
 ```text
 DynamoDB: VisitorsCount
+
 Lambda: visitor-counter
+
 API Gateway: visitor-counter-API
 ```
 
@@ -118,14 +120,108 @@ Como este é um laboratório e os recursos já haviam sido testados, foi adotado
 
 ### Recursos removidos antes do `sam deploy`
 
+Antes de realizar uma nova implantação do SAM, os recursos da implantação anterior foram removidos para garantir que o ambiente fosse recriado do zero:
+
 ```text
 DynamoDB: VisitorsCount
+
 Lambda: visitor-counter
+
 API Gateway: visitor-counter-API
+
 IAM Role manual da Lambda
 ```
 
-A stack que estava em `REVIEW_IN_PROGRESS` também foi removida antes de uma nova tentativa de deploy.
+Além dos recursos acima, a stack do CloudFormation que estava associada à implantação anterior também foi removida.
+
+### Remoção da stack CloudFormation
+
+A remoção da stack **não é necessária em um deploy normal**.
+
+Em condições normais:
+
+```text
+Primeiro sam deploy
+        ↓
+CloudFormation cria a stack
+        ↓
+CREATE
+```
+
+Nas implantações seguintes:
+
+```text
+sam deploy
+    ↓
+CloudFormation
+    ↓
+UPDATE da stack existente
+```
+
+Entretanto, durante este laboratório, os recursos físicos haviam sido removidos manualmente enquanto a stack do CloudFormation ainda possuía referências a esses recursos.
+
+Isso deixou a infraestrutura em um estado inconsistente.
+
+Durante uma nova tentativa de deploy, o CloudFormation tentou atualizar a Lambda `visitor-counter`, mas o recurso físico não existia mais, resultando no erro:
+
+```text
+Lambda function visitor-counter could not be found
+```
+
+Como o objetivo deste laboratório era recriar a infraestrutura do zero, a stack também foi removida antes de uma nova criação completa.
+
+Quando a stack estiver em um estado inconsistente, como `UPDATE_FAILED` ou `UPDATE_ROLLBACK_FAILED`, ou quando os recursos físicos já tiverem sido removidos manualmente, a stack pode ser removida para permitir uma nova criação completa.
+
+Com o perfil AWS correto configurado:
+
+```bash
+export AWS_PROFILE=cloud-resume-aws
+```
+
+A stack é removida com:
+
+```bash
+aws cloudformation delete-stack \
+  --stack-name cloud-resume-challenge-aws \
+  --region us-east-1
+```
+
+Para aguardar a conclusão da remoção:
+
+```bash
+aws cloudformation wait stack-delete-complete \
+  --stack-name cloud-resume-challenge-aws \
+  --region us-east-1
+```
+
+A remoção pode ser confirmada com:
+
+```bash
+aws cloudformation describe-stacks \
+  --stack-name cloud-resume-challenge-aws \
+  --region us-east-1 \
+  --profile cloud-resume-aws
+```
+
+O resultado esperado é:
+
+```text
+ValidationError: Stack with id cloud-resume-challenge-aws does not exist
+```
+
+Após a confirmação de que a stack não existe mais, o ambiente pode ser recriado pelo SAM:
+
+```bash
+sam build
+```
+
+e:
+
+```bash
+sam deploy
+```
+
+Nesse cenário, o CloudFormation deverá realizar uma operação de `CREATE`, recriando os recursos definidos no `template.yaml`.
 
 > **Alternativa avançada:** em um ambiente onde os recursos não podem ser apagados, é possível importar recursos existentes para uma stack CloudFormation. Esse processo é mais complexo e não foi utilizado neste laboratório.
 
@@ -213,7 +309,6 @@ Resources:
         - Key: Project
           Value: CloudResumeChallenge
 
-
   CloudResumeCounter:
     Type: AWS::Serverless::Function
     Properties:
@@ -242,7 +337,6 @@ Resources:
     Metadata:
       SamResourceId: CloudResumeCounter
 
-
   CloudResumeApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -258,7 +352,6 @@ Resources:
 
         AllowHeaders:
           - Content-Type
-
 
 Outputs:
 
@@ -297,7 +390,7 @@ A chave primária é:
 id
 ```
 
-O atributo `count` não aparece em `AttributeDefinitions` porque ele **não faz parte da chave da tabela**.
+O atributo `visitor_count` não aparece em `AttributeDefinitions` porque ele **não faz parte da chave da tabela**.
 
 A Lambda recebe o nome da tabela por variável de ambiente:
 
@@ -331,16 +424,25 @@ Conteúdo utilizado:
 version = 0.1
 
 [default.deploy.parameters]
+
 stack_name = "cloud-resume-challenge-aws"
+
 resolve_s3 = false
+
 s3_bucket = "sam-artifacts-rafael-2026"
+
 s3_prefix = "cloud-resume-challenge-aws"
+
 confirm_changeset = true
+
 capabilities = "CAPABILITY_IAM"
+
 image_repositories = []
+
 disable_rollback = true
 
 [default.global.parameters]
+
 region = "us-east-1"
 ```
 
@@ -442,6 +544,7 @@ A organização final utilizada foi:
 
 ```text
 CloudResumeChallengeAWS
+
 ├── CloudResume-APIGateway
 ├── CloudResume-CloudFormation
 ├── CloudResume-DynamoDB-Management
@@ -547,6 +650,8 @@ caso ela já seja a política utilizada para a distribuição.
 
 Responsável por operações administrativas do DynamoDB necessárias ao processo de infraestrutura.
 
+Como a tabela atual do projeto é `VisitorsCount`, o ARN utilizado deve corresponder a esse nome:
+
 ```json
 {
     "Version": "2012-10-17",
@@ -562,7 +667,7 @@ Responsável por operações administrativas do DynamoDB necessárias ao process
                 "dynamodb:GetItem",
                 "dynamodb:UpdateItem"
             ],
-            "Resource": "arn:aws:dynamodb:us-east-1:696537703431:table/CloudResumeVisitorCountSAM"
+            "Resource": "arn:aws:dynamodb:us-east-1:696537703431:table/VisitorsCount"
         }
     ]
 }
@@ -636,6 +741,8 @@ Responsável pelas operações IAM utilizadas para criar e administrar as Roles 
 
 ## 8.7 Política `CloudResume-Lambda-Deploy`
 
+A função atual do projeto é `visitor-counter`. Portanto, o ARN da política deve refletir o nome atual:
+
 ```json
 {
     "Version": "2012-10-17",
@@ -653,11 +760,13 @@ Responsável pelas operações IAM utilizadas para criar e administrar as Roles 
                 "lambda:TagResource",
                 "lambda:UntagResource"
             ],
-            "Resource": "arn:aws:lambda:us-east-1:696537703431:function:cloud-resume-*"
+            "Resource": "arn:aws:lambda:us-east-1:696537703431:function:visitor-counter"
         }
     ]
 }
 ```
+
+> Se o nome da função for alterado no `template.yaml`, o ARN dessa política também deverá ser atualizado.
 
 ---
 
@@ -688,8 +797,11 @@ Estrutura:
 
 ```text
 Lambda visitor-counter
+
         ↓
+
 Execution Role
+
 ├── AWSLambdaBasicExecutionRole
 └── VisitorsCount-DynamoDB-Access
 ```
@@ -842,19 +954,24 @@ Durante o processo, serão criados pelo CloudFormation os recursos definidos no 
 Exemplo dos eventos observados durante o deploy:
 
 ```text
-CREATE_IN_PROGRESS  AWS::DynamoDB::Table      CloudResumeVisitorCount
-CREATE_COMPLETE     AWS::DynamoDB::Table      CloudResumeVisitorCount
+CREATE_IN_PROGRESS  AWS::DynamoDB::Table       CloudResumeVisitorCount
 
-CREATE_IN_PROGRESS  AWS::IAM::Role            CloudResumeCounterRole
-CREATE_COMPLETE     AWS::IAM::Role            CloudResumeCounterRole
+CREATE_COMPLETE     AWS::DynamoDB::Table       CloudResumeVisitorCount
 
-CREATE_IN_PROGRESS  AWS::Lambda::Function     CloudResumeCounter
-CREATE_COMPLETE     AWS::Lambda::Function     CloudResumeCounter
+CREATE_IN_PROGRESS  AWS::IAM::Role             CloudResumeCounterRole
 
-CREATE_IN_PROGRESS  AWS::ApiGatewayV2::Api    CloudResumeApi
-CREATE_COMPLETE     AWS::ApiGatewayV2::Api    CloudResumeApi
+CREATE_COMPLETE     AWS::IAM::Role             CloudResumeCounterRole
+
+CREATE_IN_PROGRESS  AWS::Lambda::Function      CloudResumeCounter
+
+CREATE_COMPLETE     AWS::Lambda::Function      CloudResumeCounter
+
+CREATE_IN_PROGRESS  AWS::ApiGatewayV2::Api     CloudResumeApi
+
+CREATE_COMPLETE     AWS::ApiGatewayV2::Api     CloudResumeApi
 
 CREATE_COMPLETE     AWS::Lambda::Permission
+
 CREATE_COMPLETE     AWS::ApiGatewayV2::Stage
 
 CREATE_COMPLETE     AWS::CloudFormation::Stack
@@ -870,15 +987,19 @@ Exemplo:
 
 ```text
 ApiUrl
+
 https://1wwa2j23cc.execute-api.us-east-1.amazonaws.com
 
 ApiCountUrl
+
 https://1wwa2j23cc.execute-api.us-east-1.amazonaws.com/count
 
 DynamoDBTableName
+
 VisitorsCount
 
 LambdaFunctionName
+
 visitor-counter
 ```
 
@@ -931,11 +1052,14 @@ async function getVisitorCount() {
 
         const data = await response.json();
 
-        document.getElementById('visitor-count').textContent = data.count || '0';
+        document.getElementById('visitor-count').textContent =
+            data.count || '0';
 
     } catch (error) {
         console.error('Erro ao carregar contador:', error);
-        document.getElementById('visitor-count').textContent = '⚠️ Erro';
+
+        document.getElementById('visitor-count').textContent =
+            '⚠️ Erro';
     }
 }
 
@@ -1017,25 +1141,42 @@ A arquitetura final fica:
 
 ```text
                     Usuário
+
                        │
+
                        ▼
+
               CloudFront / S3
+
                        │
                        │ script.js
                        ▼
-             GET /count
+
+                  GET /count
+
                        │
+
                        ▼
-              API Gateway HTTP
+
+             API Gateway HTTP
+
                        │
+
                        ▼
-             Lambda visitor-counter
+
+            Lambda visitor-counter
+
                        │
+
                        ▼
-              DynamoDB VisitorsCount
+
+             DynamoDB VisitorsCount
+
                        │
+
                        ▼
-                 {"count": N}
+
+                  {"count": N}
 ```
 
 Com SAM/IaC, a infraestrutura serverless é descrita em:
@@ -1062,7 +1203,9 @@ Antes de considerar a etapa concluída:
 
 ```bash
 sam validate
+
 sam build
+
 sam deploy
 ```
 
@@ -1084,7 +1227,7 @@ com o item:
 
 ```text
 id = visitor_count
-count = N
+visitor_count = N
 ```
 
 ### Lambda
@@ -1133,7 +1276,9 @@ Criar e ativar um ambiente virtual:
 
 ```bash
 python3 -m venv .venv
+
 source .venv/bin/activate
+
 pip install -r backend/requirements.txt
 ```
 
@@ -1163,6 +1308,7 @@ E usar:
 
 ```toml
 resolve_s3 = false
+
 s3_bucket = "sam-artifacts-rafael-2026"
 ```
 
@@ -1206,6 +1352,7 @@ Estrutura:
 
 ```text
 Lambda Role
+
 ├── AWSLambdaBasicExecutionRole
 └── VisitorsCount-DynamoDB-Access
 ```
@@ -1226,7 +1373,9 @@ A stack do CloudFormation estava tentando criar recursos que já existiam fora d
 
 ```text
 VisitorsCount
+
 visitor-counter
+
 visitor-counter-API
 ```
 
@@ -1238,12 +1387,57 @@ Remover os recursos serverless criados manualmente e deixar o SAM recriá-los e 
 
 ---
 
-## Problema 6 — `ERR_NAME_NOT_RESOLVED` no navegador
+## Problema 6 — Lambda não encontrada durante atualização da stack
+
+### Erro
+
+```text
+Lambda function visitor-counter could not be found
+```
+
+### Causa
+
+A Lambda física havia sido removida manualmente, mas a stack do CloudFormation ainda possuía referência ao recurso.
+
+O CloudFormation tentou realizar uma atualização:
+
+```text
+UPDATE
+    ↓
+CloudResumeCounter
+    ↓
+visitor-counter
+    ↓
+Recurso físico não existe
+```
+
+### Solução utilizada neste laboratório
+
+Como os recursos serverless seriam recriados do zero, a stack inconsistente também foi removida:
+
+```bash
+aws cloudformation delete-stack \
+  --stack-name cloud-resume-challenge-aws \
+  --region us-east-1
+```
+
+Após a remoção completa, o próximo `sam deploy` passou a ter como objetivo criar uma nova stack:
+
+```text
+CREATE
+```
+
+> Esse procedimento foi específico para o estado inconsistente encontrado neste laboratório. Em um deploy normal, a stack existente deve ser atualizada, e não apagada.
+
+---
+
+## Problema 7 — `ERR_NAME_NOT_RESOLVED` no navegador
 
 ### Erro
 
 ```text
 GET https://<API-antiga>/count
+
 net::ERR_NAME_NOT_RESOLVED
 ```
 
@@ -1256,14 +1450,15 @@ O `script.js` ainda estava apontando para uma URL antiga da API.
 Atualizar a URL para a URL gerada pelo SAM:
 
 ```javascript
-const apiUrl = 'https://<API-ID>.execute-api.us-east-1.amazonaws.com/count';
+const apiUrl =
+    'https://<API-ID>.execute-api.us-east-1.amazonaws.com/count';
 ```
 
 Enviar o arquivo ao S3 e invalidar o CloudFront.
 
 ---
 
-## Problema 7 — `ReferenceError: count is not defined`
+## Problema 8 — `ReferenceError: count is not defined`
 
 ### Erro
 
@@ -1286,12 +1481,13 @@ mas a variável `count` não havia sido declarada.
 Usar o valor retornado pela API:
 
 ```javascript
-document.getElementById('visitor-count').textContent = data.count || '0';
+document.getElementById('visitor-count').textContent =
+    data.count || '0';
 ```
 
 ---
 
-## Problema 8 — CloudFront ainda servindo o `script.js` antigo
+## Problema 9 — CloudFront ainda servindo o `script.js` antigo
 
 ### Sintoma
 
@@ -1367,4 +1563,6 @@ e os parâmetros de implantação em:
 samconfig.toml
 ```
 
-Isso prepara o projeto para a próxima etapa: **CI/CD do backend**, onde o processo de validação, build e deploy poderá ser automatizado.
+Isso prepara o projeto para a próxima etapa:
+
+**CI/CD do backend**, onde o processo de validação, build e deploy poderá ser automatizado.

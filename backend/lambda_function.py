@@ -20,12 +20,12 @@ def lambda_handler(event, context):
 
         response = table.update_item(
             Key={'id': 'visitor_count'},
-            UpdateExpression='ADD visit_count :inc',
+            UpdateExpression='ADD visitor_count :inc',
             ExpressionAttributeValues={':inc': 1},
             ReturnValues='UPDATED_NEW'
         )
 
-        count = response['Attributes']['visit_count']
+        count = response['Attributes']['visitor_count']
 
         return {
             'statusCode': 200,
