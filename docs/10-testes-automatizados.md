@@ -31,7 +31,6 @@ mkdir -p backend
 boto3
 pytest
 moto
-EOF
 
 ```
 

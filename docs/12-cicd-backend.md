@@ -273,6 +273,238 @@ template.yaml
 
 para o processo de deploy.
 
+# Criação do GitHub OIDC e IAM Role
+
+Para permitir que o GitHub Actions realize o deploy na AWS sem utilizar Access Keys, foi configurada uma integração entre o GitHub Actions e o AWS IAM utilizando **OpenID Connect (OIDC)**.
+
+A configuração possui duas partes:
+
+1. Criar o provedor de identidade OIDC do GitHub.
+2. Criar uma IAM Role que o GitHub Actions poderá assumir.
+
+---
+
+## 1. Criar o provedor de identidade OIDC
+
+### Objetivo
+
+O provedor OIDC permite que a AWS reconheça e confie nos tokens de identidade emitidos pelo GitHub Actions.
+
+No Console da AWS:
+
+**IAM → Identity providers → Add provider**
+
+Na tela **Adicionar provedor de identidade**, selecionar:
+
+```text
+Tipo de provedor:
+OpenID Connect
+```
+
+Preencher os campos:
+
+```text
+URL do provedor:
+https://token.actions.githubusercontent.com
+
+Público:
+sts.amazonaws.com
+```
+
+A configuração fica:
+
+```text
+GitHub Actions
+      │
+      │ Token OIDC
+      ▼
+https://token.actions.githubusercontent.com
+      │
+      ▼
+AWS IAM
+```
+
+Após preencher os campos, clicar em:
+
+**Adicionar provedor**
+
+O provedor criado será:
+
+```text
+token.actions.githubusercontent.com
+```
+
+---
+
+# 2. Criar a IAM Role para o GitHub Actions
+
+### Objetivo
+
+A Role será assumida temporariamente pelo GitHub Actions através do OIDC para executar o deploy do backend.
+
+No Console da AWS:
+
+**IAM → Roles → Create role**
+
+Na tela **Selecionar entidade confiável**, escolher:
+
+```text
+Política de confiança personalizada
+```
+
+Isso permite definir manualmente quais tokens do GitHub terão permissão para assumir a Role.
+
+---
+
+## 3. Configurar a Trust Policy
+
+Na política de confiança personalizada, utilizar:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::696537703431:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:sub": "repo:BarrosAmorim/cloud-resume-challenge-aws:ref:refs/heads/main"
+        }
+      }
+    }
+  ]
+}
+```
+
+### Restrição do repositório
+
+O campo `sub` foi configurado para aceitar somente:
+
+```text
+repo:BarrosAmorim/cloud-resume-challenge-aws:ref:refs/heads/main
+```
+
+Isso significa que a Role está restrita ao:
+
+```text
+Repositório:
+BarrosAmorim/cloud-resume-challenge-aws
+
+Branch:
+main
+```
+
+A estrutura da autenticação fica:
+
+```text
+GitHub Actions
+      │
+      │ OIDC Token
+      ▼
+GitHub OIDC
+      │
+      │ AssumeRoleWithWebIdentity
+      ▼
+github-actions-backend-role
+      │
+      ▼
+AWS
+```
+
+---
+
+# 4. Nome da Role
+
+Na etapa de configuração da Role, utilizar:
+
+```text
+github-actions-backend-role
+```
+
+Depois finalizar a criação com:
+
+**Create role**
+
+---
+
+# 5. Permissões da Role
+
+Foram adicionadas as seguintes políticas gerenciadas pela AWS:
+
+```text
+AmazonS3FullAccess
+AWSCloudFormationFullAccess
+AWSLambda_FullAccess
+```
+
+Essas permissões permitem que o GitHub Actions:
+
+* utilize o bucket S3 utilizado pelo SAM;
+* crie e atualize recursos através do CloudFormation;
+* faça o deploy e atualização da função Lambda.
+
+### Observação
+
+Essas permissões são utilizadas neste laboratório para simplificar a configuração do CI/CD. Em um ambiente de produção, o ideal seria aplicar o princípio do **menor privilégio (Least Privilege)** e restringir as permissões aos recursos e ações realmente necessários.
+
+---
+
+# 6. Configuração final
+
+Ao final desta etapa, a AWS possui:
+
+### Provedor OIDC
+
+```text
+token.actions.githubusercontent.com
+```
+
+### IAM Role
+
+```text
+github-actions-backend-role
+```
+
+### Repositório autorizado
+
+```text
+BarrosAmorim/cloud-resume-challenge-aws
+```
+
+### Branch autorizada
+
+```text
+main
+```
+
+### Fluxo de autenticação
+
+```text
+GitHub Actions
+      │
+      │ OIDC
+      ▼
+token.actions.githubusercontent.com
+      │
+      ▼
+AWS IAM
+      │
+      │ AssumeRoleWithWebIdentity
+      ▼
+github-actions-backend-role
+      │
+      ├── S3
+      ├── CloudFormation
+      └── Lambda
+```
+
+Com essa configuração, o GitHub Actions pode autenticar na AWS **sem armazenar Access Key e Secret Access Key como secrets do GitHub**.
+
 ---
 
 # 10. Autenticação AWS utilizando OIDC
